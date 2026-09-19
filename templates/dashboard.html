@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — LocalLoop{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div><span class="eyebrow">BUSINESS DASHBOARD</span><h1>{{ business["name"] }}</h1><p>{{ business["category"] }} · {{ business["location"] }}</p></div>
+  <a class="btn primary" href="{{ url_for('feedback_page') }}">+ Collect feedback</a>
+</section>
+
+<section class="metrics">
+  <div class="metric"><span>Total feedback</span><strong>{{ insights.total }}</strong><small>All-time demo data</small></div>
+  <div class="metric"><span>Average rating</span><strong>{{ insights.avg_rating }} / 5</strong><small>Customer rating</small></div>
+  <div class="metric"><span>Positive</span><strong>{{ insights.positive_pct }}%</strong><small>Of analyzed feedback</small></div>
+  <div class="metric"><span>Negative</span><strong>{{ insights.negative_pct }}%</strong><small>Needs attention</small></div>
+</section>
+
+<section class="dashboard-grid">
+  <div class="panel">
+    <div class="panel-head"><div><span class="eyebrow">CUSTOMER SIGNALS</span><h2>What customers talk about</h2></div></div>
+    <div class="theme-list">
+      {% for t in insights.themes %}
+      <div class="theme-row"><span>{{ t.name }}</span><b>{{ t.count }}</b></div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel highlight">
+    <span class="eyebrow">RECOMMENDED NEXT MOVE</span>
+    <h2>{{ insights.recommended.theme }}</h2>
+    <p>{{ insights.recommended.action }}</p>
+    <span class="priority-pill">Priority: {{ insights.recommended.impact }}</span>
+    <small class="recommendation-reason">{{ insights.recommended.reason }}</small>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><span class="eyebrow">PRIORITIZATION</span><h2>Issues worth investigating</h2></div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Issue</th><th>Mentions</th><th>High urgency</th><th>Impact</th><th>Suggested action</th></tr></thead>
+      <tbody>
+      {% for p in insights.priority %}
+        <tr><td><b>{{ p.theme }}</b></td><td>{{ p.mentions }}</td><td>{{ p.high }}</td><td><span class="impact {{ p.impact|lower }}">{{ p.impact }}</span></td><td>{{ p.action }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><div><span class="eyebrow">RECENT FEEDBACK</span><h2>Customer voice</h2></div></div>
+  <div class="feedback-list">
+  {% for f in feedback[:8] %}
+    <article class="feedback-item">
+      <div class="rating">{{ "★" * f["rating"] }}{{ "☆" * (5-f["rating"]) }}</div>
+      <p>“{{ f["comment"] }}”</p>
+      <div class="feedback-meta"><span>{{ f["theme"] }}</span><span class="sent {{ f["sentiment"] }}">{{ f["sentiment"] }}</span></div>
+    </article>
+  {% endfor %}
+  </div>
+</section>
+{% endblock %}

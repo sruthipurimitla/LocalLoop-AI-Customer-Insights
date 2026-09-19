@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}LocalLoop — Customer insights{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">AI CUSTOMER INSIGHTS · B2B SAAS</span>
+    <h1>Turn customer feedback into <span>better decisions.</span></h1>
+    <p class="hero-text">LocalLoop helps small businesses listen to customers, discover recurring problems, prioritize what matters and close the feedback loop.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="{{ url_for('dashboard') }}">Explore dashboard →</a>
+      <a class="btn secondary" href="{{ url_for('feedback_page') }}">Try customer view</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="mini-top"><span>LIVE INSIGHT</span><span class="pulse"></span></div>
+    <div class="big-number">{{ insights.total }}</div>
+    <p>customer feedback records analyzed</p>
+    <div class="insight-box">
+      <b>Priority: {{ insights.recommended.impact if insights.recommended else "—" }}</b><br>
+      {{ insights.recommended.action if insights.recommended else "Start collecting customer feedback." }}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <span class="eyebrow">THE LOOP</span>
+    <h2>Feedback should lead to action.</h2>
+  </div>
+  <div class="steps">
+    <div class="step"><b>01</b><h3>Listen</h3><p>Collect feedback from customers with a simple experience.</p></div>
+    <div class="step"><b>02</b><h3>Understand</h3><p>AI groups sentiment, themes and recurring issues.</p></div>
+    <div class="step"><b>03</b><h3>Act</h3><p>Prioritize issues and turn insights into experiments.</p></div>
+    <div class="step"><b>04</b><h3>Measure</h3><p>Track whether a change actually improves the experience.</p></div>
+  </div>
+</section>
+{% endblock %}
